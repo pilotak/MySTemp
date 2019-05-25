@@ -6,12 +6,24 @@
     SensorBattery battery;
 #endif
 
-#include <sensors/SensorMCP9808.h>
-SensorMCP9808 mcp9808;
+#if defined(SENSOR_MCP9808)
+    #include <sensors/SensorMCP9808.h>
+    SensorMCP9808 mcp9808;
+#endif
 
 void before() {
+#if defined(DONE_PIN)
+    pinMode(DONE_PIN, OUTPUT);
+    digitalWrite(DONE_PIN, LOW);
+#endif
+#if defined(REPORT_BATTERY_LEVEL)
     battery.setMinVoltage(2.7);
     battery.setMaxVoltage(3.0);
+    battery.setReportIntervalMinutes(90);
+#endif
+
+    nodeManager.setReportIntervalMinutes(30);
+    nodeManager.setSleepMinutes(30);
     nodeManager.before();
 }
 
@@ -20,10 +32,6 @@ void presentation() {
 }
 
 void setup() {
-    pinMode(DONE_PIN, OUTPUT);
-    digitalWrite(DONE_PIN, LOW);
-
-    nodeManager.setSleepOrWait(true);
     nodeManager.setSleepBetweenSend(500);
 
 #if !defined(REPORT_BATTERY_LEVEL)
@@ -36,10 +44,14 @@ void setup() {
 void loop() {
     nodeManager.loop();
 
+#if defined(DONE_PIN)
+
     while (1) {
         digitalWrite(DONE_PIN, HIGH);
         delay(1);
         digitalWrite(DONE_PIN, LOW);
         delay(1);
     }
+
+#endif
 }
