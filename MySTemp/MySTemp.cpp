@@ -6,16 +6,15 @@
     SensorBattery battery;
 #endif
 
-#if defined(SENSOR_MCP9808)
-    #include <sensors/SensorMCP9808.h>
-    SensorMCP9808 mcp9808;
-#endif
+#include <sensors/SensorMCP9808.h>
+SensorMCP9808 mcp9808;
 
 void before() {
 #if defined(DONE_PIN)
     pinMode(DONE_PIN, OUTPUT);
     digitalWrite(DONE_PIN, LOW);
 #endif
+
 #if defined(REPORT_BATTERY_LEVEL)
     battery.setMinVoltage(2.7);
     battery.setMaxVoltage(3.0);

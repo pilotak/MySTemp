@@ -12,7 +12,7 @@ install:
   - platformio update
 
 script:
-  - platformio run -e MySTemp868 -e MySTemp2400
+  - platformio run -e MySTemp868 -e MySTemp868-sleepy -e MySTemp868-sleepy-8mhz-debug -e MySTemp2400 -e MySTemp2400-sleepy
 
 notifications:
   email:
